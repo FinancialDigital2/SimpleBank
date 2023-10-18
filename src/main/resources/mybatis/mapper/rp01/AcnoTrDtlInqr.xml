@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sb.rp01.IAcnoTrDtlInqr">
+
+	<select id="S001" parameterType="map" resultType="java.util.HashMap" ><![CDATA[
+select 
+        a.tr_dt  /*거래일자*/
+      , a.acno  /*계좌번호*/
+      , a.tr_no /*거래번호*/
+      , a.syns_cd /*적요코드*/
+      , c.syns_nm  /*적요명*/
+      , a.tr_tp_dcd /*거래유형구분코드*/
+      , a.tr_amt /*거래금액*/
+      , a.bf_daca /*이전예수금*/
+      , a.af_daca /*이후예수금*/
+      , a.cncl_yn /*취소여부*/
+      , a.strt_tr_no /*시작거래번호*/
+      , a.orgn_tr_no /*원거래번호*/
+      , a.clnt_nm /*의뢰인명*/
+      , a.real_tr_dtm /*실제거래일시*/
+      , a.oprt_tr_dtm /*조작거래일시*/
+      , b.opnt_acno   /*상대계좌번호*/
+      , b.rel_com_actno  /*연계기관계좌번호*/
+      , b.rel_com_cd     /*연계기관코*/
+      
+ from sb.rpd1000 a  /*거래내역*/    
+    left outer join sb.rpd1010 b  /*연계거래내역*/
+        on  a.ACNO = b.ACNO
+          and a.TR_DT = b.TR_DT
+          and a.TR_NO = b.TR_NO
+, sb.rpa0100 c  /*적요코드*/          
+where a.SYNS_CD = c.SYNS_CD 
+
+  and a.ACNO = #{acno}
+  and a.TR_DT BETWEEN #{inqr_strt_dt} AND #{inqr_end_dt}
+      
+]]>
+	</select>
+
+</mapper>
