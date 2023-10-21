@@ -208,3 +208,19 @@ USE SB;
   - 인터페이스를 호출할 수 있다.
 - XML
   - 인터페이스에서 정의한 메소드를 구현한다.
+
+### 참고
+```SQL
+
+/*거래내역 조회 SQL*/
+SELECT B.SYNS_NM, C.OPNT_ACNO, A.*
+FROM RPD1000 A /*거래내역*/
+    LEFT OUTER JOIN RPD1010 C /*연계거래내역*/
+        ON A.ACNO = C.ACNO 
+        AND A.TR_DT = C.TR_DT
+        AND A.TR_NO = C.TR_NO
+    ,RPA0100 B /*적요코드*/
+     
+WHERE A.SYNS_CD = B.SYNS_CD 
+ORDER BY A.TR_DT, A.ACNO, A.TR_NO
+```
